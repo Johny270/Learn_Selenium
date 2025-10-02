@@ -12,6 +12,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ByIdOrName;
+import org.openqa.selenium.support.locators.RelativeLocator;
+import org.openqa.selenium.support.locators.RelativeLocator.RelativeBy;
 import org.openqa.selenium.support.pagefactory.ByAll;
 import org.openqa.selenium.support.pagefactory.ByChained;
 
@@ -139,6 +141,16 @@ class LocationStrategiesTest {
 		
 		List<WebElement> rowsInForm = driver.findElements(new ByAll(By.tagName("form"), By.className("row")));
 		assertThat(rowsInForm.size()).isEqualTo(5);
+	}
+	
+	@Test
+	void testRelativeLocators() {
+		driver.get("https://bonigarcia.dev/selenium-webdriver-java/web-form.html");
+		
+		WebElement link = driver.findElement(By.linkText("Return to index"));
+		RelativeBy relativeBy = RelativeLocator.with(By.tagName("input"));
+		WebElement readOnly = driver.findElement(relativeBy.above(link));
+		assertThat(readOnly.getAttribute("name")).isEqualTo("my-readonly");
 	}
 
 }
